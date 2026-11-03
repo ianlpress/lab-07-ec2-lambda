@@ -14,7 +14,7 @@ Suppose your instance is running and has a public IP address, but `ssh` cannot c
 
 **Your answer:** Which path did you take in the console (service → page → tab)?
 
-...
+I went to the AWS Console, then EC2 → Security Groups (under Network & Security) → launch-wizard-1 → Inbound rules tab. It shows one rule that lets SSH in on TCP port 22 from 0.0.0.0/0, so if that rule were missing or pointed at the wrong address, ssh would just time out.
 
 ## 2. Lambda: why didn't my function run?
 
@@ -26,7 +26,7 @@ Suppose you uploaded a new book to your bucket, but several minutes later MongoD
 
 **Your answer:** Which path did you take in the console (service → page → tab)?
 
-...
+I went to Lambda → Functions → book-analyzer-dev-analyze_new_book and looked at the Function overview diagram. S3 is connected as the trigger, which is what starts the function when a .txt file lands in my bucket, so if it were missing, uploads would never run anything.
 
 ## 3. Lambda: where do I find the error?
 
@@ -38,7 +38,7 @@ Suppose the function did start, but MongoDB still has no document for the book. 
 
 **Your answer:** Which path did you take in the console (service → page → tab)?
 
-...
+I went to Lambda → Functions → book-analyzer-dev-analyze_new_book → Monitor tab → View CloudWatch logs → the newest log stream. That's where I found pg74.txt: 74383 words, and it's also where an error message would show up if the function had failed.
 
 ## 4. EC2 or Lambda: a backlog or new uploads?
 
@@ -54,4 +54,6 @@ For comparison, typical times in this lab:
 
 **Your answer:**
 
-...
+**Case A:** EC2. It's a one-time batch job, so I'd launch an instance, run the analysis over all 5,000 books (roughly 15 to 20 minutes at the rate I saw), and terminate it, so I only pay while it's working.
+
+**Case B:** Lambda. Books arrive at random times, a few a day, so a machine would sit idle most of the time, while Lambda starts on each upload, finishes in a couple of seconds, and only costs money while it runs.
